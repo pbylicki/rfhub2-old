@@ -14,8 +14,8 @@ from robot.utils.argumentparser import ArgFileParser
 from tornado.httpserver import HTTPServer
 from tornado.wsgi import WSGIContainer
 
-from . import blueprints
-from .kwdb import KeywordTable
+from rfhub import blueprints
+from rfhub.kwdb import KeywordTable
 
 
 class RobotHub(object):
