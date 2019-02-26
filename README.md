@@ -1,4 +1,6 @@
-# Welcome to Robot Framework Hub
+# Robot Framework Hub
+
+[![Build Status](https://travis-ci.org/pbylicki/robotframework-hub.svg?branch=master)](https://travis-ci.org/pbylicki/robotframework-hub)
 
 This is a very early version of a server for the robot framework
 testing framework. The hub uses flask to provide both a RESTful
