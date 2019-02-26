@@ -24,9 +24,9 @@
 | | 
 | | ${actual} | Get Element Count | //*[@id="left"]/ul/li/label
 | | # why 8? Because we explicitly load 5 libraries 
-| | # and three resource files in the setup
-| | Should Be Equal As Integers | ${actual} | 8
-| | ... | Expected 8 items in navlist, found ${actual}
+| | # and two resource files in the setup
+| | Should Be Equal As Integers | ${actual} | 7
+| | ... | Expected 7 items in navlist, found ${actual}
 
 | Nav panel shows all libraries
 | | [Documentation]
