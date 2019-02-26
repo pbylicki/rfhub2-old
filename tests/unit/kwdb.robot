@@ -2,7 +2,7 @@
 | Documentation | Unit tests for the keyword database library 
 | Library       | Collections
 | Library | OperatingSystem
-| Resource      | ${KEYWORD_DIR}/KWDBKeywords.robot
+| Resource      | ../keywords/KWDBKeywords.robot
 | Force tags    | kwdb
 | Suite Setup   | Initialize suite variables
 

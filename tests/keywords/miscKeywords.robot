@@ -4,7 +4,6 @@
 
 | Library | Process
 | Library | RequestsLibrary
-| Library | Dialogs
 
 *** Keywords ***
 | Start rfhub

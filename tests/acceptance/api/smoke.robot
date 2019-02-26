@@ -4,7 +4,7 @@ name is the test data. Clever, or too clever? It certainly reads nice.
 *** Settings ***
 | Library         | RequestsLibrary
 | Library         | Collections
-| Resource        | ${KEYWORD_DIR}/APIKeywords.robot
+| Resource        | ../../keywords/APIKeywords.robot
 | Suite Setup     | Create session | rfhub | url=http://${host}:${port}
 | Suite Teardown  | Delete All Sessions
 | Test Template   | Verify URL return codes

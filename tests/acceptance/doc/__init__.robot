@@ -1,5 +1,5 @@
 *** Settings ***
-| Resource | tests/keywords/miscKeywords.robot
+| Resource | ../../keywords/miscKeywords.robot
 
 | Suite Setup    | Start rfhub | --port | ${PORT}
 | # we want to control pricisely which libraries are loaded,
@@ -10,7 +10,7 @@
 | ... | Collections
 | ... | Easter
 | ... | Screenshot
-| ... | Selenium2Library
+| ... | SeleniumLibrary
 | Suite Teardown | Stop rfhub
 
 *** Variables ***
