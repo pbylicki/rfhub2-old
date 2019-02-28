@@ -6,7 +6,7 @@ import unittest
 class KeywordTableTest(unittest.TestCase):
 
     def setUp(self):
-        self.kwdb = KeywordTable()
+        self.kwdb = KeywordTable('sqlite:///:memory:')
         data_dir = join(dirname(__file__), 'data')
         self.one_keyword_resource = join(data_dir, 'onekeyword.robot')
         self.two_keywords_resource = join(data_dir, 'twokeywords.robot')

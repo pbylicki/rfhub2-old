@@ -27,7 +27,9 @@ name is the test data. Clever, or too clever? It certainly reads nice.
 | /api/keywords/unknown_library/unknown_keyword | 404
 | /api/keywords/builtin/unknown_keyword         | 404
 | /api/libraries                                | 200
-| /api/libraries/BuiltIn                        | 200
+| /api/libraries?pattern=BuiltIn                | 200
+| /api/libraries/BuiltIn                        | 404
+| /api/libraries/0                              | 404
 
 # need to move these to a separate file since
 # this template keyword expects JSON output

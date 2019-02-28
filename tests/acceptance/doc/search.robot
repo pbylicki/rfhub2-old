@@ -129,11 +129,9 @@
 | | Go to | ${ROOT}/doc
 | | Search for | none shall pass
 | | Click link | link=None Shall Pass
-| | # N.B. "5" is the expected collection_id of the "Easter" library
-| | # Perhaps that's a bad thing to assume, but since this test suite
-| | # controls which libraries are loaded, it's a reasonably safe bet.
 | | Wait Until Element Is Visible | id=kw-none-shall-pass
-| | Location should be | ${ROOT}/doc/keywords/5/None%20Shall%20Pass/
+| | Location should contain | ${ROOT}/doc/keywords/
+| | Location should contain | /None%20Shall%20Pass/
 
 *** Keywords ***
 | Search for

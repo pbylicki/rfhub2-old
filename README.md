@@ -27,7 +27,16 @@ line:
 ```
     $ python -m rfhub /path/to/test/suite
 ```
+By default it will create in-memory SQLite database. 
+If you want to run it with persistent database (for example PostgreSQL):
 
+```
+    $ python -m rfhub --db postgresql://postgres:@localhost:5432/db /path/to/test/suite
+```
+
+NOTE: Application uses SQLAlchemy for database interaction. 
+In order to use it with specific database you need to install related Python package
+(like `psycopg2` for PostgreSQL)
 
 ## Websites
 

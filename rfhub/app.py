@@ -29,12 +29,13 @@ class RobotHub(object):
             print(__version__)
             sys.exit(0)
 
-        self.kwdb = KeywordTable(poll=self.args.poll)
+        self.kwdb = KeywordTable(self.args.db, poll=self.args.poll)
         self.app = flask.Flask(__name__)
 
         with self.app.app_context():
             current_app.kwdb = self.kwdb
 
+        self.kwdb.reset()
         for lib in self.args.library:
             try:
                 self.kwdb.add_library(lib)
@@ -76,6 +77,8 @@ class RobotHub(object):
 
     def _parse_args(self):
         parser = argparse.ArgumentParser()
+        parser.add_argument("--db", default="sqlite:///:memory:",
+                            help="use the given database URL (default=sqlite:///:memory:)")
         parser.add_argument("-l", "--library", action="append", default=[],
                             help="load the given LIBRARY (eg: -l DatabaseLibrary)")
         parser.add_argument("-i", "--interface", default="127.0.0.1",

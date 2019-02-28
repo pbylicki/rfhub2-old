@@ -1,7 +1,7 @@
 *** Settings ***
 | Resource | ../../keywords/miscKeywords.robot
 
-| Suite Setup    | Start rfhub | --port | ${PORT}
+| Suite Setup    | Start rfhub | --port | ${PORT} | --db | ${DB_URL}
 | # we want to control pricisely which libraries are loaded,
 | # so we aren't so dependent on what is actually installed
 | ... | --no-installed-keywords

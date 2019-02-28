@@ -5,10 +5,11 @@ This provides the view functions for the /api/libraries endpoints
 import flask
 from flask import current_app
 
+
 class ApiEndpoint(object):
     def __init__(self, blueprint):
         blueprint.add_url_rule("/libraries/", view_func = self.get_libraries)
-        blueprint.add_url_rule("/libraries/<collection_id>", view_func = self.get_library)
+        blueprint.add_url_rule("/libraries/<int:collection_id>", view_func = self.get_library)
 
     def get_libraries(self):
         kwdb = current_app.kwdb
@@ -23,4 +24,6 @@ class ApiEndpoint(object):
         print("get_library: collection_id=", collection_id)
         kwdb = current_app.kwdb
         collection = kwdb.get_collection(collection_id)
+        if collection is None:
+            flask.abort(404)
         return flask.jsonify(collection=collection)

@@ -5,10 +5,13 @@ sudo: required
 dist: trusty
 addons:
   chrome: stable
+services:
+  - postgresql
 cache: pip
 install:
-  - pip install -r requirements.txt
+  - pip install -r requirements.txt -r requirements-postgres.txt
 before_script:
+  - psql -c 'create database hub_test;' -U postgres
   - wget "http://chromedriver.storage.googleapis.com/2.46/chromedriver_linux64.zip"
   - unzip chromedriver_linux64.zip
   - sudo mv chromedriver /usr/local/bin
@@ -18,3 +21,4 @@ before_script:
 script:
   - python -m unittest utests
   - robot -A tests/conf/default.args tests
+  - robot -A tests/conf/postgres.args tests

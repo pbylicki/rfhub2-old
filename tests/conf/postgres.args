@@ -3,7 +3,7 @@
 --variable BROWSER:chrome
 --variable HOST:localhost
 --variable PORT:7071
---variable DB_URL:sqlite:///:memory:
+--variable DB_URL:postgresql://postgres:@localhost:5432/hub_test
 
 --outputdir tests/results
 
