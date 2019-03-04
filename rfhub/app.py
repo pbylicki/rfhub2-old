@@ -30,28 +30,35 @@ class RobotHub(object):
             sys.exit(0)
 
         self.kwdb = KeywordTable(self.args.db, poll=self.args.poll)
-        self.app = flask.Flask(__name__)
 
-        with self.app.app_context():
-            current_app.kwdb = self.kwdb
+        if not self.args.web:
+            print("Loading libraries data")
+            self.kwdb.reset()
+            for lib in self.args.library:
+                try:
+                    self.kwdb.add_library(lib)
+                except robot.errors.DataError as e:
+                    sys.stderr.write("unable to load library '%s': %s\n" % (lib, e))
+            self._load_keyword_data(self.args.path, self.args.no_installed_keywords)
 
-        self.kwdb.reset()
-        for lib in self.args.library:
-            try:
-                self.kwdb.add_library(lib)
-            except robot.errors.DataError as e:
-                sys.stderr.write("unable to load library '%s': %s\n" % (lib, e))
-        self._load_keyword_data(self.args.path, self.args.no_installed_keywords)
+        if not self.args.worker:
+            self.app = flask.Flask(__name__)
 
-        self.app.add_url_rule("/", "home", self._root)
-        self.app.add_url_rule("/ping", "ping", self._ping)
-        self.app.add_url_rule("/favicon.ico", "favicon", self._favicon)
-        self.app.register_blueprint(blueprints.api, url_prefix="/api")
-        self.app.register_blueprint(blueprints.doc, url_prefix="/doc")
-        self.app.register_blueprint(blueprints.dashboard, url_prefix="/dashboard")
+            with self.app.app_context():
+                current_app.kwdb = self.kwdb
+
+            self.app.add_url_rule("/", "home", self._root)
+            self.app.add_url_rule("/ping", "ping", self._ping)
+            self.app.add_url_rule("/favicon.ico", "favicon", self._favicon)
+            self.app.register_blueprint(blueprints.api, url_prefix="/api")
+            self.app.register_blueprint(blueprints.doc, url_prefix="/doc")
+            self.app.register_blueprint(blueprints.dashboard, url_prefix="/dashboard")
 
     def start(self):
         """Start the app"""
+        if self.args.worker:
+            print("Closing application - worker mode")
+            return
         if self.args.debug:
             self.app.run(port=self.args.port, debug=self.args.debug, host=self.args.interface)
         else:
@@ -77,6 +84,10 @@ class RobotHub(object):
 
     def _parse_args(self):
         parser = argparse.ArgumentParser()
+        parser.add_argument("--web", action="store_true", default=False,
+                            help="Does not load libraries before server start, relies on worker process to load it")
+        parser.add_argument("--worker", action="store_true", default=False,
+                            help="Load libraries to database and does not start web server")
         parser.add_argument("--db", default="sqlite:///:memory:",
                             help="use the given database URL (default=sqlite:///:memory:)")
         parser.add_argument("-l", "--library", action="append", default=[],

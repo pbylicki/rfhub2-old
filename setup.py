@@ -17,7 +17,10 @@ setup(
     long_description = open('README.md').read(),
     zip_safe         = True,
     include_package_data = True,
-    install_requires = ['Flask', 'watchdog', 'robotframework', 'tornado'],
+    install_requires = ['Flask', 'watchdog', 'robotframework', 'SQLAlchemy', 'tornado'],
+    extras_require   = {
+      "postgresql": ["psycopg2-binary"]
+    },
     classifiers      = [
         "Development Status :: 4 - Beta",
         "License :: OSI Approved :: Apache Software License",

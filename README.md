@@ -11,6 +11,8 @@ package, do the following:
 
 ```
     $ pip install robotframework-hub
+    # or if you want to use Postgres as underlying database
+    $ pip install robotframework-hub[postgresql]
     $ python -m rfhub
 ```
 
@@ -37,6 +39,20 @@ If you want to run it with persistent database (for example PostgreSQL):
 NOTE: Application uses SQLAlchemy for database interaction. 
 In order to use it with specific database you need to install related Python package
 (like `psycopg2` for PostgreSQL)
+
+## Web and Worker modes
+By default application is responsible for both loading data to database and running web server.
+If you want to run them separately, for example to deploy server without access to actual library files
+and load data periodically to shared database, you can run application in web and worker modes:
+
+```
+    $ python -m rfhub --db postgresql://postgres:@localhost:5432/db --web
+    $ python -m rfhub --db postgresql://postgres:@localhost:5432/db --worker
+```
+Web process skips loading library data (but it tries to create required tables if they are not yet created) 
+and starts web server.
+
+Worker process creates tables if required, loads library data and exits.
 
 ## Websites
 
