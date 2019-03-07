@@ -1,6 +1,6 @@
 # rfhub2
 
-[![Build Status](https://travis-ci.org/pbylicki/robotframework-hub.svg?branch=master)](https://travis-ci.org/pbylicki/robotframework-hub)
+[![Build Status](https://travis-ci.org/pbylicki/rfhub2.svg?branch=master)](https://travis-ci.org/pbylicki/rfhub2)
 
 rfhub2 is a new take on [rfhub](https://github.com/boakley/robotframework-hub) 
 created by [Bryan Oakley](https://github.com/boakley).
