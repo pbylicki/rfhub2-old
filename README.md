@@ -1,6 +1,9 @@
 # rfhub2
 
 [![Build Status](https://travis-ci.org/pbylicki/rfhub2.svg?branch=master)](https://travis-ci.org/pbylicki/rfhub2)
+[![image](https://img.shields.io/pypi/v/rfhub2.svg)](https://pypi.org/project/rfhub2/)
+[![image](https://img.shields.io/pypi/pyversions/rfhub2.svg)](https://pypi.org/project/rfhub2/)
+[![image](https://img.shields.io/pypi/wheel/rfhub2.svg)](https://pypi.org/project/rfhub2/)
 
 rfhub2 is a new take on [rfhub](https://github.com/boakley/robotframework-hub) 
 created by [Bryan Oakley](https://github.com/boakley).
