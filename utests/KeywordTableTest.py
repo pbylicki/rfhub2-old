@@ -1,4 +1,4 @@
-from rfhub.kwdb import KeywordTable
+from rfhub2.kwdb import KeywordTable
 from os.path import dirname, join
 import unittest
 

@@ -3,7 +3,7 @@
 import flask
 from flask import current_app
 import json
-from rfhub.version import __version__
+from rfhub2.version import __version__
 
 blueprint = flask.Blueprint('doc', __name__,
                             template_folder="templates",

@@ -15,7 +15,7 @@
 | | 
 | | # Make sure we use the same python executable used by the test runner
 | | ${python}= | Evaluate | sys.executable | sys
-| | ${rfhub process}= | Start process | ${python} | -m | rfhub | @{options}
+| | ${rfhub process}= | Start process | ${python} | -m | rfhub2 | @{options}
 | | sleep | 2 seconds | # give the server a chance to start
 | | Set suite variable | ${rfhub process}
 | | Wait until keyword succeeds | 20 seconds | 1 second

@@ -46,7 +46,7 @@
 | | [Documentation]
 | | ... | Starts rfhub in worker mode
 | | ${python}= | Evaluate | sys.executable | sys
-| | ${worker_process}= | Start process | ${python} | -m | rfhub | --worker | @{options}
+| | ${worker_process}= | Start process | ${python} | -m | rfhub2 | --worker | @{options}
 | | Wait For Process | ${worker_process} | 20 seconds | on_timeout=kill
 | | ${result}= | Get process result
 | | Run keyword if | len('''${result.stderr}''') > 0

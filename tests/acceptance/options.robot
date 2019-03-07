@@ -77,7 +77,7 @@
 | | ... | The stdout of the process will be in a test suite
 | | ... | variable named \${output}
 | | 
-| | ${output} | Run | python -m rfhub ${options}
+| | ${output} | Run | python -m rfhub2 ${options}
 | | Set test variable | ${output}
 
 | Output should contain
