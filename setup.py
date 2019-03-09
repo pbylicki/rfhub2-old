@@ -16,7 +16,6 @@ setup(
     long_description_content_type='text/markdown',
     zip_safe=True,
     include_package_data=True,
-    python_requires=">=3.6",
     install_requires=['Flask', 'watchdog', 'robotframework', 'SQLAlchemy', 'tornado'],
     extras_require={
         "postgresql": ["psycopg2-binary"]
@@ -42,7 +41,7 @@ setup(
     scripts=[],
     entry_points={
         'console_scripts': [
-            "rfhub2 = rfhub2.__main__:main"
+            "rfhub2 = rfhub2.__main__"
         ]
     }
 )
