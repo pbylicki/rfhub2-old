@@ -22,12 +22,11 @@ package, do the following:
     $ pip install rfhub2
     # or if you want to use Postgres as underlying database
     $ pip install rfhub2[postgresql]
-    # run web server
+    # run web server from installed package
+    $ rfhub2
+    # run web server from source root directory
     $ python -m rfhub2
-```
-
-To run from source it's the same, except instead of installing,
-you cd to the folder that has this file. 
+``` 
 
 That's it! You can now browse documentation by visiting the url
 http://localhost:7070/doc/
@@ -63,6 +62,25 @@ Web process skips loading library data (but it tries to create required tables i
 and starts web server.
 
 Worker process creates tables if required, loads library data and exits.
+
+## Docker
+
+To build Docker image:
+
+```
+    # For default SQLite backend
+    $ docker build -t rfhub2 -f docker/Dockerfile .
+    # For PostgreSQL backend
+    $ docker build -t rfhub2:postgres -f docker/Dockerfile-postgres .
+```
+
+To run web server in Docker container:
+
+```
+    $ docker run -it --rm -p 7070:7070 rfhub2
+    # To pass command line arguments
+    $ docker run -it --rm -p 7070:7070 rfhub2:postgres --web --db postgresql://postgres:@172.17.0.2:5432/hub_test
+```
 
 ## Websites
 
