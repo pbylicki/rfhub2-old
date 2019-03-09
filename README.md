@@ -4,6 +4,8 @@
 [![image](https://img.shields.io/pypi/v/rfhub2.svg)](https://pypi.org/project/rfhub2/)
 [![image](https://img.shields.io/pypi/pyversions/rfhub2.svg)](https://pypi.org/project/rfhub2/)
 [![image](https://img.shields.io/pypi/wheel/rfhub2.svg)](https://pypi.org/project/rfhub2/)
+![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/pbylicki/rfhub2.svg)
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/pbylicki/rfhub2.svg)
 
 rfhub2 is a new take on [rfhub](https://github.com/boakley/robotframework-hub) 
 created by [Bryan Oakley](https://github.com/boakley).
@@ -65,21 +67,34 @@ Worker process creates tables if required, loads library data and exits.
 
 ## Docker
 
-To build Docker image:
+Dockerized build of rfhub2 is available on Docker Hub:
+
+https://hub.docker.com/r/pbylicki/rfhub2
+
+To pull the image:
+
+```
+    # default SQLite-based build
+    $ docker pull pbylicki/rfhub2
+    # PostgreSQL-based build
+    $ docker pull pbylicki/rfhub2:postgres
+```
+
+To run web server in Docker container:
+
+```
+    $ docker run -it --rm -p 7070:7070 pbylicki/rfhub2
+    # To pass command line arguments
+    $ docker run -it --rm -p 7070:7070 pbylicki/rfhub2:postgres --web --db postgresql://postgres:@172.17.0.2:5432/hub_test
+```
+
+To build Docker image from source:
 
 ```
     # For default SQLite backend
     $ docker build -t rfhub2 -f docker/Dockerfile .
     # For PostgreSQL backend
     $ docker build -t rfhub2:postgres -f docker/Dockerfile-postgres .
-```
-
-To run web server in Docker container:
-
-```
-    $ docker run -it --rm -p 7070:7070 rfhub2
-    # To pass command line arguments
-    $ docker run -it --rm -p 7070:7070 rfhub2:postgres --web --db postgresql://postgres:@172.17.0.2:5432/hub_test
 ```
 
 ## Websites
