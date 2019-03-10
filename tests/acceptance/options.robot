@@ -23,7 +23,7 @@ Help for option -i/--interface
     Output should contain
     ...    -i INTERFACE, --interface INTERFACE
     ...    use the given network interface
-    ...    (default=127.0.0.1)
+    ...    (default=0.0.0.0)
 
 Help for option -p / --port
     [Documentation]    Verify that the help message includes help for -p/--port

@@ -4,6 +4,8 @@
 [![image](https://img.shields.io/pypi/v/rfhub2.svg)](https://pypi.org/project/rfhub2/)
 [![image](https://img.shields.io/pypi/pyversions/rfhub2.svg)](https://pypi.org/project/rfhub2/)
 [![image](https://img.shields.io/pypi/wheel/rfhub2.svg)](https://pypi.org/project/rfhub2/)
+![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/pbylicki/rfhub2.svg)
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/pbylicki/rfhub2.svg)
 
 rfhub2 is a new take on [rfhub](https://github.com/boakley/robotframework-hub) 
 created by [Bryan Oakley](https://github.com/boakley).
@@ -22,12 +24,11 @@ package, do the following:
     $ pip install rfhub2
     # or if you want to use Postgres as underlying database
     $ pip install rfhub2[postgresql]
-    # run web server
+    # run web server from installed package
+    $ rfhub2
+    # run web server from source root directory
     $ python -m rfhub2
-```
-
-To run from source it's the same, except instead of installing,
-you cd to the folder that has this file. 
+``` 
 
 That's it! You can now browse documentation by visiting the url
 http://localhost:7070/doc/
@@ -63,6 +64,38 @@ Web process skips loading library data (but it tries to create required tables i
 and starts web server.
 
 Worker process creates tables if required, loads library data and exits.
+
+## Docker
+
+Dockerized build of rfhub2 is available on Docker Hub:
+
+https://hub.docker.com/r/pbylicki/rfhub2
+
+To pull the image:
+
+```
+    # default SQLite-based build
+    $ docker pull pbylicki/rfhub2
+    # PostgreSQL-based build
+    $ docker pull pbylicki/rfhub2:postgres
+```
+
+To run web server in Docker container:
+
+```
+    $ docker run -it --rm -p 7070:7070 pbylicki/rfhub2
+    # To pass command line arguments
+    $ docker run -it --rm -p 7070:7070 pbylicki/rfhub2:postgres --web --db postgresql://postgres:@172.17.0.2:5432/hub_test
+```
+
+To build Docker image from source:
+
+```
+    # For default SQLite backend
+    $ docker build -t rfhub2 -f docker/Dockerfile .
+    # For PostgreSQL backend
+    $ docker build -t rfhub2:postgres -f docker/Dockerfile-postgres .
+```
 
 ## Websites
 

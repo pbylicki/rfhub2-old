@@ -1,0 +1,17 @@
+FROM python:3.6-alpine
+
+COPY requirements*.txt /tmp/
+
+RUN apk add --no-cache --virtual .build-deps build-base && \
+  apk add --no-cache postgresql-dev && \
+  pip install --disable-pip-version-check --no-cache-dir -r /tmp/requirements.txt -r /tmp/requirements-postgres.txt && \
+  apk del .build-deps && \
+  rm /tmp/requirements*.txt
+
+COPY rfhub2 /app/rfhub2
+
+WORKDIR /app
+
+USER 1001
+
+ENTRYPOINT ["python", "-m", "rfhub2"]

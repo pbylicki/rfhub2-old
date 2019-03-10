@@ -9,7 +9,7 @@ services:
   - postgresql
 cache: pip
 install:
-  - pip install -r requirements.txt -r requirements-postgres.txt
+  - pip install -r requirements.txt -r requirements-dev.txt -r requirements-postgres.txt
 before_script:
   - psql -c 'create database hub_test;' -U postgres
   - wget "http://chromedriver.storage.googleapis.com/2.46/chromedriver_linux64.zip"

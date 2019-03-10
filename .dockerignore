@@ -1,0 +1,10 @@
+build
+dist
+env
+rfhub2.egg-info
+tests
+utests
+venv
+.travis.yml
+*.md
+**/__pycache__
