@@ -8,9 +8,9 @@ from robot.libdocpkg.htmlwriter import DocToHtml
 
 class ApiEndpoint(object):
     def __init__(self, blueprint):
-        blueprint.add_url_rule("/keywords/", view_func = self.get_keywords)
-        blueprint.add_url_rule("/keywords/<collection_id>", view_func = self.get_library_keywords)
-        blueprint.add_url_rule("/keywords/<collection_id>/<keyword>", view_func = self.get_library_keyword)
+        blueprint.add_url_rule("/keywords/", view_func=self.get_keywords)
+        blueprint.add_url_rule("/keywords/<collection_id>", view_func=self.get_library_keywords)
+        blueprint.add_url_rule("/keywords/<collection_id>/<keyword>", view_func=self.get_library_keyword)
 
     def get_library_keywords(self,collection_id):
 
@@ -27,7 +27,7 @@ class ApiEndpoint(object):
         result = []
         for (keyword_collection_id, keyword_collection_name,
              keyword_name, keyword_doc, keyword_args) in keywords:
-            if collection_id == "" or collection_id == keyword_collection_id:
+            if collection_id == "" or int(collection_id) == keyword_collection_id:
                 data = {}
                 if ("collection_id" in fields): data["collection_id"] = keyword_collection_id
                 if ("library" in fields): data["library"] = keyword_collection_name
