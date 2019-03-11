@@ -43,6 +43,17 @@ Query Keywords From Single Library Should Return Right Keywords
     Should Not Be Empty    ${keywords list}
     Length Should Be    ${keywords list}    1
 
+Query Single Keyword From /api/keywords/keyword_name Should Return Keyword Data
+    [Documentation]    When using api to get specific keyword data by keyword name
+    ...    it should return json with keywords data.
+    [Setup]    Run keywords
+    ...    Do a GET on    /api/keywords/5
+    ...    AND    Get first returned keyword
+    Do a GET on    ${KEYWORD['api_keyword_url']}
+    ${keyword_keys}    Get Dictionary Keys    ${JSON}
+    ${expected_keys}    Create List    args    collection_id    doc    library_url    name
+    List Should Contain Sub List    ${keyword_keys}    ${expected_keys}
+
 *** Keywords ***
 Get first returned keyword
     [Documentation]

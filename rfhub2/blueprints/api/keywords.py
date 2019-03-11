@@ -72,9 +72,6 @@ class ApiEndpoint(object):
         collections = kwdb.get_collections(pattern=collection_id.strip().lower())
         if len(collections) == 1:
             collection_id = collections[0]["collection_id"]
-        else:
-            # need to redirect to a disambiguation page
-            flask.abort(404)
 
         try:
             keyword = kwdb.get_keyword(collection_id, keyword)
