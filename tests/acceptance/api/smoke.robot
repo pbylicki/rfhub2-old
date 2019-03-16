@@ -23,6 +23,7 @@ Verify URL return codes
 /api/keywords?library=builtin                    200
 /api/keywords?pattern=Should*                    200 
 /api/keywords/builtin/Should%20be%20equal        200
+/api/keywords/1/I%20do%20not%20exist             404
 /keyword                                         404
 /api/keywords/unknown_library/unknown_keyword    404
 /api/keywords/builtin/unknown_keyword            404
