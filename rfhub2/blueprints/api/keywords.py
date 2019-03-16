@@ -12,13 +12,17 @@ class ApiEndpoint(object):
         blueprint.add_url_rule("/keywords/<collection_id>", view_func=self.get_library_keywords)
         blueprint.add_url_rule("/keywords/<collection_id>/<keyword>", view_func=self.get_library_keyword)
 
-    def get_library_keywords(self,collection_id):
+    def get_library_keywords(self, collection_id):
 
         query_pattern = flask.request.args.get('pattern', "*").strip().lower()
-        keywords = current_app.kwdb.get_keywords(query_pattern)
+        # Check if library or resource exists
+        if not current_app.kwdb.get_collection(collection_id):
+            current_app.logger.warning(f"Collection with id:{collection_id} was not found.")
+            flask.abort(404)
+        keywords = current_app.kwdb.get_keywords(query_pattern, collection_id)
 
-        req_fields  = flask.request.args.get('fields', "*").strip().lower()
-        if (req_fields == "*"):
+        req_fields = flask.request.args.get('fields', "*").strip().lower()
+        if req_fields == "*":
             fields = ("collection_id","library", "name","synopsis","doc","htmldoc","args",
                       "doc_keyword_url", "api_keyword_url", "api_library_url")
         else:

@@ -486,7 +486,7 @@ class KeywordTable(object):
                   for row in cursor]
         return list(set(result))
 
-    def get_keywords(self, pattern="*"):
+    def get_keywords(self, pattern="*", collection_id=None):
         """Returns all keywords that match a glob-style pattern
 
         The pattern matching is insensitive to case. The function
@@ -494,6 +494,15 @@ class KeywordTable(object):
         keyword_synopsis tuples) sorted by keyword name
 
         """
+        if collection_id:
+            where_clause = and_(
+                self.keywords.c.name.ilike(self._glob_to_sql(pattern)),
+                self.collections.c.collection_id == (int(collection_id))
+            )
+        else:
+            where_clause = and_(
+                self.keywords.c.name.ilike(self._glob_to_sql(pattern)))
+
         query = select([
             self.collections.c.collection_id,
             self.collections.c.name,
@@ -503,7 +512,7 @@ class KeywordTable(object):
         ]).select_from(
             self.collections.join(self.keywords)
         ).where(
-            self.keywords.c.name.ilike(self._glob_to_sql(pattern))
+            where_clause
         ).order_by(
             self.collections.c.name, self.keywords.c.name
         )
