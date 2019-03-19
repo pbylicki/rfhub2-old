@@ -20,9 +20,9 @@ Nav panel shows correct number of collections
     [Documentation]    Verify that the nav panel has the correct number of items
     [Tags]    navpanel
     ${actual}    Get Element Count    //*[@id="left"]/ul/li/label
-    # why 8? Because we explicitly load 5 libraries 
-    # and three resource files in the setup
-    Should Be Equal As Integers    ${actual}    8
+    # why 12? Because we explicitly load 9 libraries
+    # and 3 resource files in the setup
+    Should Be Equal As Integers    ${actual}    12
     ...    Expected 8 items in navlist, found ${actual}
 
 Nav panel shows all libraries
@@ -38,8 +38,8 @@ Main panel shows correct number of libraries
     [Documentation]    Verify that the main panel has the correct number of items
     [Tags]    navpanel
     ${actual}    Get Element Count    //*[@id="right"]/div[1]/table/tbody/tr/td/a
-    # why 5? Because we explicitly load 5 libraries in the suite setup
-    Should Be Equal As Integers    ${actual}    5
+    # why 9? Because we explicitly load 9 libraries in the suite setup
+    Should Be Equal As Integers    ${actual}    9
     ...    Expected 5 items in navlist, found ${actual}
 
 Main panel shows all libraries
