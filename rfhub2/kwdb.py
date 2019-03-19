@@ -40,7 +40,7 @@ I haven't done extensive testing.
 
 
 class WatchdogHandler(PatternMatchingEventHandler):
-    
+
     def __init__(self, kwdb, path):
         PatternMatchingEventHandler.__init__(self)
         self.kwdb = kwdb
@@ -79,7 +79,9 @@ class KeywordTable(object):
         """
 
         if os.path.isdir(name):
-            if not os.path.basename(name).startswith("."):
+            if self._looks_like_library_with_init(name):
+                self.add_library(name)
+            elif not os.path.basename(name).startswith("."):
                 self.add_folder(name)
 
         elif os.path.isfile(name):
@@ -174,7 +176,8 @@ class KeywordTable(object):
         """Add a library to the database
 
         This method is for adding a library by name (eg: "BuiltIn")
-        rather than by a file.
+        or by path. Imports also libraries with __init__.py as single library,
+        with assumption that init is used to import all listed files.
         """
         libdoc = LibraryDocumentation(name)
         if len(libdoc.keywords) > 0:
@@ -218,7 +221,10 @@ class KeywordTable(object):
                 if os.path.isdir(path):
                     if not basename.startswith("."):
                         if os.access(path, os.R_OK):
-                            self.add_folder(path, watch=False)
+                            if self._looks_like_library_with_init(path):
+                                self.add(path)
+                            else:
+                                self.add_folder(path, watch=False)
                 else:
                     if ext in ALL_PATTERNS:
                         if os.access(path, os.R_OK):
@@ -464,9 +470,9 @@ class KeywordTable(object):
                  ORDER by collection.collection_id, collection.name, keyword.name
              """
         where_clause = or_(
-                self.keywords.c.name.ilike(pattern),
-                self.keywords.c.doc.ilike(pattern)
-            )
+            self.keywords.c.name.ilike(pattern),
+            self.keywords.c.doc.ilike(pattern)
+        )
         if mode == "name":
             where_clause = self.keywords.c.name.ilike(pattern)
 
@@ -529,6 +535,9 @@ class KeywordTable(object):
 
     def _looks_like_library_file(self, name):
         return name.endswith(".py")
+
+    def _looks_like_library_with_init(self, path):
+        return os.path.isfile(os.path.join(path, '__init__.py'))
 
     def _looks_like_libdoc_file(self, name):
         """Return true if an xml file looks like a libdoc file"""
