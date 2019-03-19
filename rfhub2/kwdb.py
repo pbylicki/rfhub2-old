@@ -22,6 +22,9 @@ from watchdog.events import PatternMatchingEventHandler
 from watchdog.observers import Observer
 from watchdog.observers.polling import PollingObserver
 
+RESOURCE_PATTERNS = {".robot", ".txt", ".tsv", ".resource"}
+ALL_PATTERNS = (RESOURCE_PATTERNS | {".xml", ".py"})
+
 """
 Note: It seems to be possible for watchdog to fire an event
 when a file is modified, but before the file is _finished_
@@ -37,8 +40,7 @@ I haven't done extensive testing.
 
 
 class WatchdogHandler(PatternMatchingEventHandler):
-    patterns = ["*.robot", "*.txt", "*.py", "*.tsv"]
-
+    
     def __init__(self, kwdb, path):
         PatternMatchingEventHandler.__init__(self)
         self.kwdb = kwdb
@@ -73,7 +75,7 @@ class KeywordTable(object):
         self.observer.start()
 
     def add(self, name, monitor=True):
-        """Add a folder, library (.py) or resource file (.robot, .tsv, .txt) to the database
+        """Add a folder, library (.py) or resource file (.robot, .tsv, .txt, .resource) to the database
         """
 
         if os.path.isdir(name):
@@ -218,7 +220,7 @@ class KeywordTable(object):
                         if os.access(path, os.R_OK):
                             self.add_folder(path, watch=False)
                 else:
-                    if ext in (".xml", ".robot", ".txt", ".py", ".tsv"):
+                    if ext in ALL_PATTERNS:
                         if os.access(path, os.R_OK):
                             self.add(path)
             except Exception as e:
@@ -556,10 +558,7 @@ class KeywordTable(object):
             return False
 
         found_keyword_table = False
-        if (name.lower().endswith(".robot") or
-                name.lower().endswith(".txt") or
-                name.lower().endswith(".tsv")):
-
+        if os.path.splitext(name)[1].lower() in RESOURCE_PATTERNS:
             with open(name, "r") as f:
                 data = f.read()
                 for match in re.finditer(r'^\*+\s*(Test Cases?|(?:User )?Keywords?)',
