@@ -21,9 +21,9 @@ Nav panel shows correct number of collections
     [Tags]    navpanel
     ${actual}    Get Element Count    //*[@id="left"]/ul/li/label
     # why 8? Because we explicitly load 5 libraries 
-    # and two resource files in the setup
-    Should Be Equal As Integers    ${actual}    7
-    ...    Expected 7 items in navlist, found ${actual}
+    # and three resource files in the setup
+    Should Be Equal As Integers    ${actual}    8
+    ...    Expected 8 items in navlist, found ${actual}
 
 Nav panel shows all libraries
     [Documentation]    Verify that the nav panel shows all of the libraries
@@ -60,6 +60,16 @@ Main panel shows all library descriptions
        Should be equal    ${expected}    ${actual}
     END
 
+Main panel shows robot files with .resource extension
+    [Documentation]    Main panel shows robot files with .resource extension
+    ${section}=    Set Variable
+    FOR    ${lib}    IN    @{libraries}
+       ${lib_name}    Get From Dictionary    ${lib}    name
+       Exit For Loop If    '${lib_name}'=='test_resource'
+    END
+    Dictionary Should Contain Item    ${lib}    synopsis    File with .resource extension with one test keyword
+    Dictionary Should Contain Item    ${lib}    type        resource
+
 *** Keywords ***
 Get list of libraries via the API
     [Documentation] 
@@ -69,4 +79,3 @@ Get list of libraries via the API
     Do a get on    /api/libraries
     ${libraries}=    Get From Dictionary    ${JSON}    libraries
     Set suite variable    ${libraries} 
-
