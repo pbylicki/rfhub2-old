@@ -12,6 +12,7 @@ import os
 import re
 
 import robot.libraries
+from robot.errors import DataError
 from robot.libdocpkg import LibraryDocumentation
 from sqlalchemy import and_, or_, create_engine, Column, ForeignKey, Integer, MetaData, Sequence, Table, Text
 from sqlalchemy.sql import select
@@ -512,8 +513,14 @@ class KeywordTable(object):
         return name.endswith(".py")
 
     def _looks_like_library_with_init(self, path):
-        return len(LibraryDocumentation(path).keywords) > 0 \
-            if os.path.isfile(os.path.join(path, '__init__.py')) else False
+        try:
+            return len(LibraryDocumentation(path).keywords) > 0 \
+                if os.path.isfile(os.path.join(path, '__init__.py')) else False
+        except DataError:
+            return False
+
+        # return len(LibraryDocumentation(path).keywords) > 0 \
+        #     if os.path.isfile(os.path.join(path, '__init__.py')) else False
 
     def _looks_like_libdoc_file(self, name):
         """Return true if an xml file looks like a libdoc file"""
