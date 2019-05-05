@@ -23,7 +23,7 @@ Nav panel shows correct number of collections
     # why 12? Because we explicitly load 9 libraries
     # and 3 resource files in the setup
     Should Be Equal As Integers    ${actual}    12
-    ...    Expected 8 items in navlist, found ${actual}
+    ...    Expected 12 items in navlist, found ${actual}
 
 Nav panel shows all libraries
     [Documentation]    Verify that the nav panel shows all of the libraries
