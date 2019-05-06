@@ -513,14 +513,8 @@ class KeywordTable(object):
         return name.endswith(".py")
 
     def _looks_like_library_with_init(self, path):
-        try:
-            return len(LibraryDocumentation(path).keywords) > 0 \
-                if os.path.isfile(os.path.join(path, '__init__.py')) else False
-        except DataError:
-            return False
-
-        # return len(LibraryDocumentation(path).keywords) > 0 \
-        #     if os.path.isfile(os.path.join(path, '__init__.py')) else False
+        return os.path.isfile(os.path.join(path, '__init__.py')) and \
+            len(LibraryDocumentation(path).keywords) > 0
 
     def _looks_like_libdoc_file(self, name):
         """Return true if an xml file looks like a libdoc file"""
