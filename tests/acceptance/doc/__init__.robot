@@ -6,6 +6,7 @@ Suite Setup    Start rfhub    --port    ${PORT}    --db    ${DB_URL}
 # so we aren't so dependent on what is actually installed
 ...    --no-installed-keywords
 ...    tests/keywords
+...    tests/fixtures
 ...    BuiltIn
 ...    Collections
 ...    Easter

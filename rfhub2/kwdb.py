@@ -6,16 +6,14 @@ are referred to as "collections".
 
 """
 
-import ast
 import json
 import logging
 import os
 import re
-import sys
 
 import robot.libraries
-from robot.libdocpkg import LibraryDocumentation
 from robot.errors import DataError
+from robot.libdocpkg import LibraryDocumentation
 from sqlalchemy import and_, or_, create_engine, Column, ForeignKey, Integer, MetaData, Sequence, Table, Text
 from sqlalchemy.sql import select
 from watchdog.events import PatternMatchingEventHandler
@@ -40,7 +38,7 @@ I haven't done extensive testing.
 
 
 class WatchdogHandler(PatternMatchingEventHandler):
-    
+
     def __init__(self, kwdb, path):
         PatternMatchingEventHandler.__init__(self)
         self.kwdb = kwdb
@@ -79,39 +77,19 @@ class KeywordTable(object):
         """
 
         if os.path.isdir(name):
-            if not os.path.basename(name).startswith("."):
+            if self._looks_like_library_with_init(name):
+                self.add_library(name)
+            elif not os.path.basename(name).startswith("."):
                 self.add_folder(name)
-
         elif os.path.isfile(name):
             if ((self._looks_like_resource_file(name)) or
                     (self._looks_like_libdoc_file(name)) or
                     (self._looks_like_library_file(name))):
                 self.add_file(name)
-                if self._looks_like_library_file(name):
-                    class_names = self._get_classnames_from_file(name)
-                    if class_names:
-                        self.add_keywords_from_classes(name, class_names)
         else:
             # let's hope it's a library name!
             self.add_library(name)
 
-    def add_keywords_from_classes(self, path, class_names):
-        sys.path.append(os.path.dirname(path))
-        file_name = os.path.splitext(os.path.basename(path))[0]
-        for class_name in class_names:
-            try:
-                lib_mane = '{}.{}'.format(file_name, class_name)
-                self.add_library(lib_mane)
-            except (KeyError, AttributeError, DataError):
-                pass
-
-    def _get_classnames_from_file(self, path):
-        with open(path) as file_to_read:
-            source = file_to_read.read()
-
-        p = ast.parse(source)
-        class_names = [node.name for node in ast.walk(p) if isinstance(node, ast.ClassDef)]
-        return class_names
 
     def on_change(self, path, event_type):
         """Respond to changes in the file system
@@ -174,7 +152,8 @@ class KeywordTable(object):
         """Add a library to the database
 
         This method is for adding a library by name (eg: "BuiltIn")
-        rather than by a file.
+        or by path. Imports also libraries with __init__.py as single library,
+        with assumption that init is used to import all listed files.
         """
         libdoc = LibraryDocumentation(name)
         if len(libdoc.keywords) > 0:
@@ -218,7 +197,10 @@ class KeywordTable(object):
                 if os.path.isdir(path):
                     if not basename.startswith("."):
                         if os.access(path, os.R_OK):
-                            self.add_folder(path, watch=False)
+                            if self._looks_like_library_with_init(path):
+                                self.add(path)
+                            else:
+                                self.add_folder(path, watch=False)
                 else:
                     if ext in ALL_PATTERNS:
                         if os.access(path, os.R_OK):
@@ -464,9 +446,9 @@ class KeywordTable(object):
                  ORDER by collection.collection_id, collection.name, keyword.name
              """
         where_clause = or_(
-                self.keywords.c.name.ilike(pattern),
-                self.keywords.c.doc.ilike(pattern)
-            )
+            self.keywords.c.name.ilike(pattern),
+            self.keywords.c.doc.ilike(pattern)
+        )
         if mode == "name":
             where_clause = self.keywords.c.name.ilike(pattern)
 
@@ -529,6 +511,10 @@ class KeywordTable(object):
 
     def _looks_like_library_file(self, name):
         return name.endswith(".py")
+
+    def _looks_like_library_with_init(self, path):
+        return os.path.isfile(os.path.join(path, '__init__.py')) and \
+            len(LibraryDocumentation(path).keywords) > 0
 
     def _looks_like_libdoc_file(self, name):
         """Return true if an xml file looks like a libdoc file"""
